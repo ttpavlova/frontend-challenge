@@ -49,8 +49,11 @@ export const HomePage = ({ handleFavourite }: HomePageProps) => {
         fetchData();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: Something went wrong</div>;
+    if (error)
+        return (
+            <div className="wrapper">Ошибка: не удалось загрузить данные</div>
+        );
+    if (loading) return <div className="wrapper">Загрузка...</div>;
 
     return (
         <div className="cards__container">

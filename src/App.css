@@ -12,6 +12,7 @@
   --white-medium-emphasis: rgba(255, 255, 255, 0.7);
   --primary-600: #1E88E5;
   --primary-500-accent: #2196F3;
+  --navbar-height: 64px;
 }
 
 .layout {
@@ -19,13 +20,15 @@
 }
 
 .wrapper {
-  max-width: 1280px;
-  width: 100%;
-  margin: 0 auto;
+  min-height: calc(100vh - var(--navbar-height) - 48px);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar {
-  height: 64px;
+  height: var(--navbar-height);
   background-color: var(--primary-500-accent);
 }
 
