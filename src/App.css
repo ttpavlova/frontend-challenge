@@ -109,3 +109,31 @@
 .card:hover .card__gradient {
   display: block;
 }
+
+.card__heart {
+  display: none;
+  position: absolute;
+  right: 9px;
+  bottom: 7px;
+  width: 48px;
+  height: 48px;
+  background: url('./assets/fav_hovered_block.svg');
+  z-index: 3;
+  cursor: pointer;
+}
+
+.card:hover .card__heart {
+  display: block;
+}
+
+.card__heart:hover {
+  background: url('./assets/fav_hovered_heart.svg');
+}
+
+.card__heart:active {
+  background: url('./assets/fav_clicked_heart.svg');
+}
+
+.card__heart_selected {
+  background: url('./assets/fav_hovered_heart.svg');
+}
