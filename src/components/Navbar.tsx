@@ -1,20 +1,35 @@
-import { Link } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 export const Navbar = () => {
+    const links = [
+        { id: 0, path: "/", title: "Все котики" },
+        { id: 1, path: "/favourites", title: "Любимые котики" },
+    ];
+
+    const { pathname } = useLocation();
+
     return (
         <nav className="navbar">
             <ul className="navbar__items">
-                <li className="navbar-item">
-                    <Link to="/" className="navbar-item__link">
-                        Все котики
-                    </Link>
-                </li>
-
-                <li className="navbar-item">
-                    <Link to="/favourites" className="navbar-item__link">
-                        Любимые котики
-                    </Link>
-                </li>
+                {links.map((link) => (
+                    <li
+                        key={link.id}
+                        className={
+                            "navbar-item " +
+                            (pathname === link.path ? "active" : "")
+                        }
+                    >
+                        <NavLink
+                            to={link.path}
+                            className={({ isActive }) =>
+                                "navbar-item__link " +
+                                (isActive ? "active" : "")
+                            }
+                        >
+                            {link.title}
+                        </NavLink>
+                    </li>
+                ))}
             </ul>
         </nav>
     );
