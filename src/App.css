@@ -27,6 +27,13 @@
   justify-content: center;
 }
 
+.loading-wrapper {
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 0 10px;
+  text-align: center;
+}
+
 .navbar {
   height: var(--navbar-height);
   background-color: var(--primary-500-accent);

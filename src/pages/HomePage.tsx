@@ -13,15 +13,36 @@ interface HomePageProps {
 
 export const HomePage = ({ handleFavourite }: HomePageProps) => {
     const [cats, setCats] = useState<Cat[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [page, setPage] = useState(0);
+
+    useEffect(() => {
+        document.addEventListener("scroll", handleScroll);
+
+        return function () {
+            document.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
+    const handleScroll = (e: Event) => {
+        const target = e.target as Document;
+
+        if (
+            target.documentElement.scrollHeight -
+                (target.documentElement.scrollTop + window.innerHeight) <
+            100
+        ) {
+            setLoading(true);
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
                 const response = await fetch(
-                    `https://api.thecatapi.com/v1/images/search?limit=${limit}`,
+                    `https://api.thecatapi.com/v1/images/search?limit=${limit}&page=${page}`,
                     {
                         headers: requestHeaders,
                     }
@@ -36,7 +57,8 @@ export const HomePage = ({ handleFavourite }: HomePageProps) => {
                         };
                     });
 
-                    setCats(mapped);
+                    setCats((prevItems) => [...prevItems, ...mapped]);
+                    setPage((prevPage) => prevPage + 1);
                 } else {
                     throw new Error("Failed to fetch");
                 }
@@ -46,24 +68,28 @@ export const HomePage = ({ handleFavourite }: HomePageProps) => {
             setLoading(false);
         };
 
-        fetchData();
-    }, []);
+        if (loading) {
+            fetchData();
+        }
+    }, [loading]);
 
     if (error)
         return (
             <div className="wrapper">Ошибка: не удалось загрузить данные</div>
         );
-    if (loading) return <div className="wrapper">Загрузка...</div>;
 
     return (
-        <div className="cards__container">
-            {cats.map((item) => (
-                <Card
-                    key={item.id}
-                    item={item}
-                    handleFavourite={handleFavourite}
-                />
-            ))}
-        </div>
+        <>
+            <div className="cards__container">
+                {cats.map((item) => (
+                    <Card
+                        key={item.id}
+                        item={item}
+                        handleFavourite={handleFavourite}
+                    />
+                ))}
+            </div>
+            {loading && <div className="loading-wrapper">Загрузка...</div>}
+        </>
     );
 };
