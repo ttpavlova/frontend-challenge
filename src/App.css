@@ -35,8 +35,11 @@ main {
 }
 
 .navbar {
+  position: sticky;
+  top: 0;
   height: var(--navbar-height);
   background-color: var(--primary-500-accent);
+  z-index: 5;
 }
 
 .navbar__items {
