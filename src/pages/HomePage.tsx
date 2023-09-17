@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import useFetch from "../hooks/useFetch";
 import { Card } from "../components/Card";
 import { Cat } from "../types";
 
 const limit = 15;
+const initialPage = 0;
 const apiKey = import.meta.env.VITE_API_KEY;
 const requestHeaders: HeadersInit = new Headers();
 requestHeaders.set("x-api-key", apiKey);
@@ -12,13 +14,16 @@ interface HomePageProps {
 }
 
 export const HomePage = ({ handleFavourite }: HomePageProps) => {
-    const [cats, setCats] = useState<Cat[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const [page, setPage] = useState(0);
+    const {
+        data: cats,
+        loading,
+        error,
+        fetchMore,
+    } = useFetch<Cat>(limit, initialPage, requestHeaders);
 
     useEffect(() => {
         document.addEventListener("scroll", handleScroll);
+        fetchMore();
 
         return function () {
             document.removeEventListener("scroll", handleScroll);
@@ -33,45 +38,9 @@ export const HomePage = ({ handleFavourite }: HomePageProps) => {
                 (target.documentElement.scrollTop + window.innerHeight) <
             100
         ) {
-            setLoading(true);
+            fetchMore();
         }
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await fetch(
-                    `https://api.thecatapi.com/v1/images/search?limit=${limit}&page=${page}`,
-                    {
-                        headers: requestHeaders,
-                    }
-                );
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const mapped = data.map((item: Cat) => {
-                        return {
-                            ...item,
-                            isFavourite: false,
-                        };
-                    });
-
-                    setCats((prevItems) => [...prevItems, ...mapped]);
-                    setPage((prevPage) => prevPage + 1);
-                } else {
-                    throw new Error("Failed to fetch");
-                }
-            } catch (e) {
-                setError(true);
-            }
-            setLoading(false);
-        };
-
-        if (loading) {
-            fetchData();
-        }
-    }, [loading]);
 
     if (error)
         return (
