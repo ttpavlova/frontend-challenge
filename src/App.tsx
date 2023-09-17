@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Navbar } from "./components/Navbar";
-import { Layout } from "./pages/Layout";
+// import { Navbar } from "./components/Navbar";
+import { Layout } from "./components/Layout";
 import { HomePage } from "./pages/HomePage";
 import { FavouritesPage } from "./pages/FavouritesPage";
 import { Cat } from "./types";
@@ -32,7 +32,6 @@ function App() {
     return (
         <>
             <BrowserRouter>
-                <Navbar />
                 <Layout>
                     <Routes>
                         <Route
