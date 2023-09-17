@@ -156,3 +156,10 @@ main {
 .card__heart_selected {
   background: url('./assets/fav_hovered_heart.svg');
 }
+
+@media screen and (max-width: 576px) {
+  .navbar__items {
+    margin: 0 32px;
+    justify-content: center;
+  }
+}
