@@ -19,7 +19,12 @@ export const HomePage = ({ handleFavourite }: HomePageProps) => {
         loading,
         error,
         fetchMore,
-    } = useFetch<Cat>(limit, initialPage, requestHeaders);
+    } = useFetch<Cat>(
+        `https://api.thecatapi.com/v1/images/search`,
+        limit,
+        initialPage,
+        requestHeaders
+    );
 
     useEffect(() => {
         document.addEventListener("scroll", handleScroll);

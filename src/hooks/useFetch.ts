@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 const useFetch = <T>(
+    url: string,
     limit: number,
     initialPage: number,
     requestHeaders: HeadersInit
@@ -20,7 +21,7 @@ const useFetch = <T>(
         const fetchData = async () => {
             try {
                 const response = await fetch(
-                    `https://api.thecatapi.com/v1/images/search?limit=${limit}&page=${page}`,
+                    `${url}?limit=${limit}&page=${page}`,
                     {
                         headers: requestHeaders,
                     }
